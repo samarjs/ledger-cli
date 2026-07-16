@@ -1,38 +1,63 @@
-\# 📒 Ledger CLI — Double-Entry Accounting System
+# Ledger CLI
 
+Ledger CLI is a command-line double-entry accounting application built with Python. It allows users to record journal entries, generate a trial balance, view the general ledger, and check account balances.
 
+## Features
 
-A command-line double-entry bookkeeping system built in Python. Perfect for ACCA students to understand the fundamentals of debits, credits, and trial balances.
+- Record balanced journal entries
+- Generate a Trial Balance
+- View the General Ledger
+- Check account balances
+- Store transactions in JSON format
 
-
-
-\## Features
-
-
-
-✅ Add journal entries with automatic validation (debits = credits)
-
-✅ View Trial Balance
-
-✅ View General Ledger by account
-
-✅ Check individual account balances
-
-✅ Persistent storage using JSON
-
-✅ Sample transactions included
-
-
-
-\## Installation
-
-
+## Installation
 
 ```bash
-
 git clone https://github.com/samarjs/ledger-cli.git
-
 cd ledger-cli
-
 python main.py
+```
 
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `add "Description" DD/MM/YYYY Account Amount Dr Account Amount Cr` | Record a transaction |
+| `list` | View all transactions |
+| `trial` | Display the Trial Balance |
+| `ledger` | Display the General Ledger |
+| `balance <account>` | Show an account balance |
+| `help` | Display available commands |
+| `exit` | Close the application |
+
+## Example
+
+```text
+ledger> add "Office Rent" 16/07/2026 Rent 500 Dr Cash 500 Cr
+
+✓ Transaction added successfully!
+
+ledger> trial
+
+Cash      500.00 Cr
+Rent      500.00 Dr
+
+Total Debits   500.00
+Total Credits  500.00
+```
+
+## Project Structure
+
+```
+ledger-cli/
+├── data/
+├── ledger/
+├── main.py
+└── README.md
+```
+
+## Author
+
+**Samar**
+
+GitHub: https://github.com/samarjs
