@@ -1,0 +1,19 @@
+[
+  {
+    "id": "0116f018",
+    "date": "2026-07-16",
+    "description": "Office Rent",
+    "entries": [
+      {
+        "account": "Rent",
+        "amount": 500.0,
+        "type": "debit"
+      },
+      {
+        "account": "Cash",
+        "amount": 500.0,
+        "type": "credit"
+      }
+    ]
+  }
+]

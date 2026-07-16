@@ -1,0 +1,38 @@
+[
+  {
+    "id": "abc12345",
+    "date": "2026-07-01",
+    "description": "Initial Capital Investment",
+    "entries": [
+      {"account": "Cash", "amount": 5000.0, "type": "debit"},
+      {"account": "Capital", "amount": 5000.0, "type": "credit"}
+    ]
+  },
+  {
+    "id": "def67890",
+    "date": "2026-07-02",
+    "description": "Paid Office Rent",
+    "entries": [
+      {"account": "Rent Expense", "amount": 500.0, "type": "debit"},
+      {"account": "Cash", "amount": 500.0, "type": "credit"}
+    ]
+  },
+  {
+    "id": "ghi24680",
+    "date": "2026-07-03",
+    "description": "Purchased Office Supplies",
+    "entries": [
+      {"account": "Office Supplies", "amount": 200.0, "type": "debit"},
+      {"account": "Cash", "amount": 200.0, "type": "credit"}
+    ]
+  },
+  {
+    "id": "jkl13579",
+    "date": "2026-07-05",
+    "description": "Service Revenue Earned",
+    "entries": [
+      {"account": "Cash", "amount": 1200.0, "type": "debit"},
+      {"account": "Service Revenue", "amount": 1200.0, "type": "credit"}
+    ]
+  }
+]
