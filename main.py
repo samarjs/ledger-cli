@@ -9,20 +9,31 @@ from ledger.reports import ReportGenerator
 
 def print_help():
     print("""
-╔══════════════════════════════════════════════════════════╗
-║  LEDGER CLI — Double-Entry Accounting System            ║
-╠══════════════════════════════════════════════════════════╣
-║  Commands:                                              ║
-║    add "Description" DD/MM/YYYY Account1 Amt1 Dr Account2 Amt2 Cr ║
-║       Example: add "Office Rent" 16/07/2026 Rent 500 Dr Cash 500 Cr ║
-║                                                         ║
-║    trial        - Show Trial Balance                    ║
-║    ledger       - Show General Ledger                   ║
-║    balance <account> - Show account balance             ║
-║    list         - List all transactions                 ║
-║    help         - Show this help                        ║
-║    exit         - Exit                                  ║
-╚══════════════════════════════════════════════════════════╝
++------------------------------------------------------------------------------+
+|               LEDGER CLI - Double-Entry Accounting System                    |
++------------------------------------------------------------------------------+
+|                                                                              |
+|  Commands                                                                    |
++------------------------------------------------------------------------------+
+| add "Description" DD/MM/YYYY Account1 Amount1 Dr Account2 Amount2 Cr         |
+|                                                                              |
+| Example:                                                                     |
+| ledger> add "Office Rent" 16/07/2026 Rent 500 Dr Cash 500 Cr                 |
+|                                                                              |
+| This records:                                                                |
+|   Rent  500.00 Dr                                                            |
+|   Cash  500.00 Cr                                                            |
+|                                                                              |
+| Transactions are automatically saved in:                                     |
+|   data/ledger.json                                                           |
++------------------------------------------------------------------------------+
+| trial                  Show the Trial Balance                                |
+| ledger                 Show the General Ledger                               |
+| balance <account>      Show the balance of an account                        |
+| list                   View all recorded transactions                        |
+| help                   Display this help menu                                |
+| exit                   Exit the application                                  |
++------------------------------------------------------------------------------+
 """)
 
 def parse_date(date_str):
