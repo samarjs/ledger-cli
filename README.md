@@ -31,7 +31,6 @@ python main.py
 | Command                                                                   | Description                      |
 | ------------------------------------------------------------------------- | -------------------------------- |
 | `add "Description" DD/MM/YYYY Account Amount Dr Account Amount Cr`        | Record a transaction             |
-| `add "Description" DD/MM/YYYY "Account Name" Amount Dr Account Amount Cr` | Record with spaced account names |
 | `list`                                                                    | View all transactions            |
 | `trial`                                                                   | Display the Trial Balance        |
 | `ledger`                                                                  | Display the General Ledger       |
