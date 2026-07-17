@@ -8,7 +8,7 @@ class Entry:
     account: str
     amount: float
     entry_type: str  # 'debit' or 'credit'
-def __post_init__(self):
+    def __post_init__(self):
         normalized = self.entry_type.strip().lower()
         if normalized in ('dr', 'debit'):
             self.entry_type = 'debit'
