@@ -8,19 +8,20 @@ from ledger.models import Entry
 from ledger.engine import LedgerEngine
 from ledger.storage import Storage
 from ledger.reports import ReportGenerator
+from ledger.colors import success, error, warning, info, header, bold
 
 def print_help():
-    print("""
+    print(header("""
 +------------------------------------------------------------------------------+
 |               LEDGER CLI - Double-Entry Accounting System                    |
-+------------------------------------------------------------------------------+
-|                                                                              |
++------------------------------------------------------------------------------+"""))
+    print(info("""
 |  Commands                                                                    |
 +------------------------------------------------------------------------------+
 | add "Description" DD/MM/YYYY Account1 Amount1 Dr Account2 Amount2 Cr         |
 |                                                                              |
 |  Account names with spaces must be in quotes:                                |
-|  add "Office Rent" 16/07/2026 "Rent Expense" 500 Dr Cash 500 Cr              |
+|  add "Office Rent" 16/07/2026 "Rent Expense" 500 Dr Cash 500 Cr               |
 |                                                                              |
 | Example:                                                                     |
 | ledger> add "Office Rent" 16/07/2026 Rent 500 Dr Cash 500 Cr                 |
@@ -29,7 +30,7 @@ def print_help():
 |   Rent  500.00 Dr                                                            |
 |   Cash  500.00 Cr                                                            |
 |                                                                              |
-| Transactions are automatically saved in:                                     |
+| Transactions are automatically saved in:                                      |
 |   data/ledger.json                                                           |
 +------------------------------------------------------------------------------+
 | trial                  Show the Trial Balance                                |
@@ -40,7 +41,7 @@ def print_help():
 | help                   Display this help menu                                |
 | exit                   Exit the application                                  |
 +------------------------------------------------------------------------------+
-""")
+"""))
 
 def parse_date(date_str):
     try:
@@ -104,8 +105,8 @@ def main():
     storage = Storage()
     engine = LedgerEngine(storage)
     reports = ReportGenerator(engine)
-    print("LEDGER CLI - Double-Entry Accounting System")
-    print("Type 'help' for commands\n")
+    print(header("LEDGER CLI - Double-Entry Accounting System"))
+    print(info("Type 'help' for commands\n"))
     while True:
         try:
             user_input = input("ledger> ").strip()
@@ -113,7 +114,7 @@ def main():
                 continue
             cmd = user_input.lower().split()[0] if user_input.split() else ""
             if cmd == "exit":
-                print("Goodbye!")
+                print(info("Goodbye!"))
                 break
             if cmd == "help":
                 print_help()
@@ -121,9 +122,9 @@ def main():
             if cmd == "list":
                 transactions = engine.get_transactions()
                 if not transactions:
-                    print("No transactions found.")
+                    print(warning("No transactions found."))
                 else:
-                    print("\nALL TRANSACTIONS")
+                    print(header("\nALL TRANSACTIONS"))
                     print("-" * 70)
                     for tx in transactions:
                         print(f"{tx.id} | {tx.date} | {tx.description}")
@@ -140,43 +141,43 @@ def main():
             if cmd == "balance":
                 parts = user_input.split(maxsplit=1)
                 if len(parts) < 2:
-                    print("Usage: balance <account_name>")
+                    print(error("Usage: balance <account_name>"))
                 else:
                     account = parts[1].strip().strip('"')
                     balance = engine.get_account_balance(account)
-                    print(f"\n{account}: {balance:.2f}\n")
+                    print(f"\n{bold(account)}: {info(f'{balance:.2f}')}\n")
                 continue
             if cmd == "delete":
                 parts = user_input.split()
                 if len(parts) < 2:
-                    print("Usage: delete <transaction_id>")
+                    print(error("Usage: delete <transaction_id>"))
                 else:
                     tx_id = parts[1]
                     if engine.delete_transaction(tx_id):
-                        print(f"Transaction {tx_id} deleted.")
+                        print(success(f"✓ Transaction {tx_id} deleted."))
                     else:
-                        print(f"Transaction {tx_id} not found.")
+                        print(error(f"✗ Transaction {tx_id} not found."))
                 continue
             if cmd == "add":
                 rest = user_input[4:].strip()
                 try:
                     date, description, entries = parse_add_command(rest)
                     tx = engine.add_transaction(date, description, entries)
-                    print("Transaction added successfully!")
+                    print(success("✓ Transaction added successfully!"))
                     print(f"   ID: {tx.id}")
                     print(f"   Date: {tx.date}")
                     print(f"   Description: {tx.description}")
                     for e in tx.entries:
                         print(f"   {e.account}: {e.amount:.2f} {e.entry_type}")
                 except ValueError as e:
-                    print(f"Error: {e}")
+                    print(error(f"✗ Error: {e}"))
                 continue
-            print(f"Unknown command '{cmd}'. Type 'help' for available commands.")
+            print(error(f"Unknown command '{cmd}'. Type 'help' for available commands."))
         except KeyboardInterrupt:
-            print("\nGoodbye!")
+            print(info("\nGoodbye!"))
             break
         except Exception as e:
-            print(f"Unexpected error: {e}")
+            print(error(f"Unexpected error: {e}"))
 
 if __name__ == "__main__":
     main()

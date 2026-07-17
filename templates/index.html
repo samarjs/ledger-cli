@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ledger CLI - Web App</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #1a1a2e; color: #eee; }
+        h1 { color: #00d4aa; text-align: center; }
+        h2 { color: #00d4aa; border-bottom: 2px solid #00d4aa; padding-bottom: 10px; }
+        .form-box { background: #16213e; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        input, select { padding: 8px; margin: 5px; border-radius: 5px; border: 1px solid #0f3460; background: #1a1a2e; color: #eee; }
+        button { background: #00d4aa; color: #1a1a2e; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #00b894; }
+        .entry-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+        .flash-success { background: #00d4aa; color: #1a1a2e; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+        .flash-error { background: #e74c3c; color: #fff; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #0f3460; }
+        th { color: #00d4aa; }
+        .dr { color: #00d4aa; }
+        .cr { color: #e74c3c; }
+        .nav { text-align: center; margin-bottom: 20px; }
+        .nav a { color: #00d4aa; text-decoration: none; margin: 0 15px; }
+        .nav a:hover { text-decoration: underline; }
+        pre { background: #16213e; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>📒 LEDGER CLI - Web App</h1>
+    
+    <div class="nav">
+        <a href="/">🏠 Home</a>
+        <a href="/ledger">📖 General Ledger</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="form-box">
+        <h2>➕ Add Transaction</h2>
+        <form action="/add" method="POST">
+            <div style="margin-bottom: 15px;">
+                <label>Date:</label>
+                <input type="text" name="date" placeholder="DD/MM/YYYY" required>
+                
+                <label>Description:</label>
+                <input type="text" name="description" placeholder="Office Rent" required>
+            </div>
+            
+            <h3>Entries:</h3>
+            <div id="entries">
+                <div class="entry-row">
+                    <input type="text" name="account[]" placeholder="Account" required>
+                    <input type="number" name="amount[]" placeholder="Amount" step="0.01" required>
+                    <select name="type[]">
+                        <option value="debit">Dr</option>
+                        <option value="credit">Cr</option>
+                    </select>
+                </div>
+                <div class="entry-row">
+                    <input type="text" name="account[]" placeholder="Account" required>
+                    <input type="number" name="amount[]" placeholder="Amount" step="0.01" required>
+                    <select name="type[]">
+                        <option value="debit">Dr</option>
+                        <option value="credit" selected>Cr</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button type="button" onclick="addEntry()">+ Add Entry</button>
+            <button type="submit">Add Transaction</button>
+        </form>
+    </div>
+
+    <h2>📊 Trial Balance</h2>
+    <pre>{{ trial }}</pre>
+
+    <h2>📋 All Transactions</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Entries</th>
+            <th>Action</th>
+        </tr>
+        {% for tx in transactions %}
+        <tr>
+            <td>{{ tx.id }}</td>
+            <td>{{ tx.date }}</td>
+            <td>{{ tx.description }}</td>
+            <td>
+                {% for e in tx.entries %}
+                    <span class="{{ e.entry_type }}">{{ e.account }}: {{ e.amount }} {{ e.entry_type[:2].upper() }}</span><br>
+                {% endfor %}
+            </td>
+            <td><a href="/delete/{{ tx.id }}" onclick="return confirm('Delete {{ tx.id }}?')">🗑️</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        function addEntry() {
+            const div = document.createElement('div');
+            div.className = 'entry-row';
+            div.innerHTML = `
+                <input type="text" name="account[]" placeholder="Account" required>
+                <input type="number" name="amount[]" placeholder="Amount" step="0.01" required>
+                <select name="type[]">
+                    <option value="debit">Dr</option>
+                    <option value="credit">Cr</option>
+                </select>
+            `;
+            document.getElementById('entries').appendChild(div);
+        }
+    </script>
+</body>
+</html>
