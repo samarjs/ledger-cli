@@ -1,3 +1,4 @@
+from decimal import Decimal
 from .engine import LedgerEngine
 
 class ReportGenerator:
@@ -12,11 +13,11 @@ class ReportGenerator:
         lines.append(f"{'Account':<30} {'Balance':>20}")
         lines.append("-"*50)
         
-        total_debits = 0
-        total_credits = 0
+        total_debits = Decimal('0')
+        total_credits = Decimal('0')
         
         for account, balance in tb.items():
-            if abs(balance) < 0.001:
+            if balance == 0:
                 continue
             if balance > 0:
                 total_debits += balance
@@ -30,10 +31,10 @@ class ReportGenerator:
         lines.append(f"{'Total Credits':<30} {total_credits:>20.2f}")
         lines.append("="*50)
         
-        if abs(total_debits - total_credits) < 0.001:
-            lines.append("✓ TRIAL BALANCE BALANCED ✓")
+        if total_debits == total_credits:
+            lines.append("TRIAL BALANCE BALANCED")
         else:
-            lines.append("✗ ERROR: Trial Balance does NOT balance! ✗")
+            lines.append("ERROR: Trial Balance does NOT balance!")
         lines.append("="*50 + "\n")
         
         return "\n".join(lines)
