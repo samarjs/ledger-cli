@@ -1,16 +1,27 @@
 # Ledger CLI
 
-Ledger CLI is a command-line double-entry accounting application built with Python. It allows users to record journal entries, generate a trial balance, view the general ledger, and check account balances.
+A Python double-entry accounting application with both **command-line** and **web** interfaces. Record journal entries, maintain ledgers, generate trial balances, and view reports — all from your terminal or browser.
+
+---
+
+## Live Demo
+
+**Web App:** https://ledger-cli.onrender.com
+
+The web app is deployed on Render's free tier. Note: Free instances spin down after inactivity, so the first load may take ~50 seconds.
+
+---
 
 ## Features
 
+### Version 1.0 ✅
 - Record balanced journal entries (Debits must equal Credits)
-- Support for account names with spaces (use quotes like "Rent Expense")
+- Support for account names with spaces (use quotes like `"Rent Expense"`)
 - Generate a Trial Balance
 - View the General Ledger
 - Check individual account balances
 - Delete transactions by ID
-- Colorized terminal output (green for success, red for errors, blue headers)
+- Colorized terminal output
 - Sequential transaction IDs (TXN-00001, TXN-00002, etc.)
 - Decimal precision for money (no floating-point rounding errors)
 - Persistent JSON storage
@@ -18,68 +29,30 @@ Ledger CLI is a command-line double-entry accounting application built with Pyth
 - Graceful handling of corrupted JSON files
 - Unit tests included
 
-## Installation
+### Version 1.1 ✅ (Current)
+- Web interface (Flask) deployed to Render
+- Add transactions via browser
+- View Trial Balance and General Ledger online
 
+### Version 1.2 (Planned)
+- Edit existing transactions
+- Search/filter transactions by keyword or date
+- Export reports to CSV
+- Undo last transaction
+
+### Future Releases
+- Multiple currency support
+- Budget tracking
+- Data import from Excel/CSV
+- GitHub Actions CI/CD
+
+---
+
+## CLI Usage
+
+### Installation
 ```bash
 git clone https://github.com/samarjs/ledger-cli.git
 cd ledger-cli
+pip install -r requirements.txt
 python main.py
-```
-
-## Commands
-
-| Command                                                                   | Description                      |
-| ------------------------------------------------------------------------- | -------------------------------- |
-| `add "Description" DD/MM/YYYY Account Amount Dr Account Amount Cr`        | Record a transaction             |
-| `list`                                                                    | View all transactions            |
-| `trial`                                                                   | Display the Trial Balance        |
-| `ledger`                                                                  | Display the General Ledger       |
-| `balance <account>`                                                       | Show an account balance          |
-| `delete <id>`                                                             | Delete a transaction by ID       |
-| `help`                                                                    | Display available commands       |
-| `exit`                                                                    | Close the application            |
-
-
-## Example
-
-```text
-ledger> add "Office Rent" 16/07/2026 "Rent Expense" 500 Dr Cash 500 Cr
-
-✓ Transaction added successfully!
-   ID: TXN-00001
-   Date: 2026-07-16
-   Description: Office Rent
-   Rent Expense: 500.00 debit
-   Cash: 500.00 credit
-```
-
-## Project Structure
-
-```
-ledger-cli/
-├── data/                      # Transaction storage (gitignored)
-│   └── ledger.json
-├── ledger/                    # Core package
-│   ├── __init__.py
-│   ├── colors.py              # Terminal color utilities
-│   ├── models.py              # Entry and Transaction dataclasses
-│   ├── engine.py              # Core ledger logic
-│   ├── storage.py             # JSON persistence
-│   └── reports.py             # Report generation
-├── tests/                     # Unit tests
-│   └── test_ledger.py
-├── main.py                    # CLI entry point
-├── pyproject.toml             # Package configuration
-├── .gitignore
-└── README.md
-```
-
-## Running Tests
-```
-python -m unittest tests.test_ledger -v
-```
-## Author
-
-**Samar**
-
-GitHub: https://github.com/samarjs
