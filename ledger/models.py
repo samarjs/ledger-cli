@@ -1,14 +1,20 @@
 from dataclasses import dataclass
 from datetime import datetime
 from typing import List, Dict, Optional
+from decimal import Decimal
 import uuid
 
 @dataclass
 class Entry:
     account: str
-    amount: float
+    amount: Decimal
     entry_type: str  # 'debit' or 'credit'
+
     def __post_init__(self):
+        # Convert float/string to Decimal if needed
+        if not isinstance(self.amount, Decimal):
+            self.amount = Decimal(str(self.amount))
+        
         normalized = self.entry_type.strip().lower()
         if normalized in ('dr', 'debit'):
             self.entry_type = 'debit'
@@ -31,7 +37,7 @@ class Transaction:
     def is_balanced(self) -> bool:
         debits = sum(e.amount for e in self.entries if e.entry_type == 'debit')
         credits = sum(e.amount for e in self.entries if e.entry_type == 'credit')
-        return abs(debits - credits) < 0.001
+        return debits == credits  # Decimal compares exactly
     
     def to_dict(self) -> dict:
         return {
@@ -39,7 +45,7 @@ class Transaction:
             'date': self.date,
             'description': self.description,
             'entries': [
-                {'account': e.account, 'amount': e.amount, 'type': e.entry_type}
+                {'account': e.account, 'amount': str(e.amount), 'type': e.entry_type}
                 for e in self.entries
             ]
         }

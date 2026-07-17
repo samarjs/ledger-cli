@@ -1,4 +1,5 @@
 from typing import List, Dict, Optional
+from decimal import Decimal
 from .models import Transaction, Entry
 from .storage import Storage
 
@@ -22,8 +23,8 @@ class LedgerEngine:
         self.save()
         return tx
     
-    def get_account_balance(self, account: str) -> float:
-        balance = 0.0
+    def get_account_balance(self, account: str) -> Decimal:
+        balance = Decimal('0')
         for tx in self.transactions:
             for entry in tx.entries:
                 if entry.account == account:
@@ -40,7 +41,7 @@ class LedgerEngine:
                 accounts.add(entry.account)
         return sorted(list(accounts))
     
-    def get_trial_balance(self) -> Dict[str, float]:
+    def get_trial_balance(self) -> Dict[str, Decimal]:
         trial_balance = {}
         for account in self.get_all_accounts():
             trial_balance[account] = self.get_account_balance(account)
@@ -48,3 +49,11 @@ class LedgerEngine:
     
     def get_transactions(self) -> List[Transaction]:
         return self.transactions
+    
+    def delete_transaction(self, tx_id: str) -> bool:
+        for i, tx in enumerate(self.transactions):
+            if tx.id == tx_id:
+                self.transactions.pop(i)
+                self.save()
+                return True
+        return False
