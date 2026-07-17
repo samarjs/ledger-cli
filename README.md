@@ -1,6 +1,6 @@
 # Ledger CLI
 
-A Python double-entry accounting application with both **command-line** and **web** interfaces. Record journal entries, maintain ledgers, generate trial balances, and view reports — all from your terminal or browser.
+A Python double-entry accounting application with both **command-line** and **web** interfaces. Record journal entries, maintain ledgers, generate trial balances, and view reports.
 
 ---
 
