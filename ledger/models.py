@@ -34,14 +34,17 @@ class Transaction:
     entries: List[Entry]
     id: str = None
     
+    _counter = 0  # Class-level counter for IDs
+    
     def __post_init__(self):
         if self.id is None:
-            self.id = str(uuid.uuid4())[:8]
+            Transaction._counter += 1
+            self.id = f"TXN-{Transaction._counter:05d}"
     
     def is_balanced(self) -> bool:
         debits = sum(e.amount for e in self.entries if e.entry_type == 'debit')
         credits = sum(e.amount for e in self.entries if e.entry_type == 'credit')
-        return debits == credits  # Decimal compares exactly
+        return debits == credits
     
     def to_dict(self) -> dict:
         return {
@@ -56,6 +59,16 @@ class Transaction:
     
     @classmethod
     def from_dict(cls, data: dict) -> 'Transaction':
+        # Restore counter if loading existing transaction
+        tx_id = data['id']
+        if tx_id.startswith('TXN-'):
+            try:
+                num = int(tx_id.split('-')[1])
+                if num > cls._counter:
+                    cls._counter = num
+            except:
+                pass
+        
         entries = [
             Entry(e['account'], e['amount'], e['type'])
             for e in data['entries']
