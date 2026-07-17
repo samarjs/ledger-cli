@@ -10,10 +10,14 @@ class Entry:
     amount: Decimal
     entry_type: str  # 'debit' or 'credit'
 
-    def __post_init__(self):
+        def __post_init__(self):
         # Convert float/string to Decimal if needed
         if not isinstance(self.amount, Decimal):
             self.amount = Decimal(str(self.amount))
+        
+        # Validate amount is positive
+        if self.amount <= 0:
+            raise ValueError(f"Amount must be positive, got {self.amount}")
         
         normalized = self.entry_type.strip().lower()
         if normalized in ('dr', 'debit'):

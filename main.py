@@ -20,7 +20,7 @@ def print_help():
 | add "Description" DD/MM/YYYY Account1 Amount1 Dr Account2 Amount2 Cr         |
 |                                                                              |
 |  Account names with spaces must be in quotes:                                |
-|  add "Office Rent" 16/07/2026 "Rent Expense" 500 Dr Cash 500 Cr               |
+|  add "Office Rent" 16/07/2026 "Rent Expense" 500 Dr Cash 500 Cr              |
 |                                                                              |
 | Example:                                                                     |
 | ledger> add "Office Rent" 16/07/2026 Rent 500 Dr Cash 500 Cr                 |
@@ -29,7 +29,7 @@ def print_help():
 |   Rent  500.00 Dr                                                            |
 |   Cash  500.00 Cr                                                            |
 |                                                                              |
-| Transactions are automatically saved in:                                       |
+| Transactions are automatically saved in:                                     |
 |   data/ledger.json                                                           |
 +------------------------------------------------------------------------------+
 | trial                  Show the Trial Balance                                |

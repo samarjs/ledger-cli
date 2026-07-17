@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "ledger-cli"
 version = "0.1.0"
 description = "A command-line double-entry accounting system"
-authors = [{name = "Samar", email = "your@email.com"}]
+authors = [{name = "Samar", email = "samarjeetsingh2005@gmail.com"}]
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.9"

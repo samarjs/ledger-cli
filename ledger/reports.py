@@ -7,6 +7,10 @@ class ReportGenerator:
     
     def trial_balance(self) -> str:
         tb = self.engine.get_trial_balance()
+        
+        if not tb:
+            return "\nNo transactions available.\n"
+        
         lines = ["\n" + "="*50]
         lines.append("TRIAL BALANCE")
         lines.append("="*50)
@@ -40,11 +44,15 @@ class ReportGenerator:
         return "\n".join(lines)
     
     def ledger(self) -> str:
+        accounts = self.engine.get_all_accounts()
+        
+        if not accounts:
+            return "\nNo transactions available.\n"
+        
         lines = ["\n" + "="*60]
         lines.append("GENERAL LEDGER")
         lines.append("="*60)
         
-        accounts = self.engine.get_all_accounts()
         for account in accounts:
             balance = self.engine.get_account_balance(account)
             lines.append(f"\n{account}")

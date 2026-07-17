@@ -11,9 +11,16 @@ class Storage:
     def load(self) -> List[Transaction]:
         if not os.path.exists(self.filename):
             return []
-        with open(self.filename, 'r') as f:
-            data = json.load(f)
-            return [Transaction.from_dict(tx) for tx in data]
+        try:
+            with open(self.filename, 'r') as f:
+                data = json.load(f)
+                return [Transaction.from_dict(tx) for tx in data]
+        except json.JSONDecodeError:
+            print("Warning: Ledger file is corrupted. Starting with empty ledger.")
+            return []
+        except Exception as e:
+            print(f"Warning: Error loading ledger: {e}. Starting with empty ledger.")
+            return []
     
     def save(self, transactions: List[Transaction]):
         with open(self.filename, 'w') as f:
