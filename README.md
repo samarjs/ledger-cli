@@ -4,11 +4,19 @@ Ledger CLI is a command-line double-entry accounting application built with Pyth
 
 ## Features
 
-- Record balanced journal entries
+- Record balanced journal entries (Debits must equal Credits)
+- Support for account names with spaces (use quotes like "Rent Expense")
 - Generate a Trial Balance
 - View the General Ledger
-- Check account balances
-- Store transactions in JSON format
+- Check individual account balances
+- Delete transactions by ID
+- Colorized terminal output (green for success, red for errors, blue headers)
+- Sequential transaction IDs (TXN-00001, TXN-00002, etc.)
+- Decimal precision for money (no floating-point rounding errors)
+- Persistent JSON storage
+- Input validation (rejects negative amounts, zero amounts, unbalanced entries)
+- Graceful handling of corrupted JSON files
+- Unit tests included
 
 ## Installation
 
@@ -20,42 +28,57 @@ python main.py
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `add "Description" DD/MM/YYYY Account Amount Dr Account Amount Cr` | Record a transaction |
-| `list` | View all transactions |
-| `trial` | Display the Trial Balance |
-| `ledger` | Display the General Ledger |
-| `balance <account>` | Show an account balance |
-| `help` | Display available commands |
-| `exit` | Close the application |
+| Command                                                                   | Description                      |
+| ------------------------------------------------------------------------- | -------------------------------- |
+| `add "Description" DD/MM/YYYY Account Amount Dr Account Amount Cr`        | Record a transaction             |
+| `add "Description" DD/MM/YYYY "Account Name" Amount Dr Account Amount Cr` | Record with spaced account names |
+| `list`                                                                    | View all transactions            |
+| `trial`                                                                   | Display the Trial Balance        |
+| `ledger`                                                                  | Display the General Ledger       |
+| `balance <account>`                                                       | Show an account balance          |
+| `delete <id>`                                                             | Delete a transaction by ID       |
+| `help`                                                                    | Display available commands       |
+| `exit`                                                                    | Close the application            |
+
 
 ## Example
 
 ```text
-ledger> add "Office Rent" 16/07/2026 Rent 500 Dr Cash 500 Cr
+ledger> add "Office Rent" 16/07/2026 "Rent Expense" 500 Dr Cash 500 Cr
 
 ✓ Transaction added successfully!
-
-ledger> trial
-
-Cash      500.00 Cr
-Rent      500.00 Dr
-
-Total Debits   500.00
-Total Credits  500.00
+   ID: TXN-00001
+   Date: 2026-07-16
+   Description: Office Rent
+   Rent Expense: 500.00 debit
+   Cash: 500.00 credit
 ```
 
 ## Project Structure
 
 ```
 ledger-cli/
-├── data/
-├── ledger/
-├── main.py
+├── data/                      # Transaction storage (gitignored)
+│   └── ledger.json
+├── ledger/                    # Core package
+│   ├── __init__.py
+│   ├── colors.py              # Terminal color utilities
+│   ├── models.py              # Entry and Transaction dataclasses
+│   ├── engine.py              # Core ledger logic
+│   ├── storage.py             # JSON persistence
+│   └── reports.py             # Report generation
+├── tests/                     # Unit tests
+│   └── test_ledger.py
+├── main.py                    # CLI entry point
+├── pyproject.toml             # Package configuration
+├── .gitignore
 └── README.md
 ```
 
+## Running Tests
+```
+python -m unittest tests.test_ledger -v
+```
 ## Author
 
 **Samar**
