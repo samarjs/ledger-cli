@@ -10,7 +10,7 @@ class Entry:
     amount: Decimal
     entry_type: str  # 'debit' or 'credit'
 
-        def __post_init__(self):
+    def __post_init__(self):
         # Convert float/string to Decimal if needed
         if not isinstance(self.amount, Decimal):
             self.amount = Decimal(str(self.amount))
