@@ -57,5 +57,5 @@ cd ledger-cli
 pip install -r requirements.txt
 python main.py
 ```
-### License
+## License
 This project is licensed under the MIT License.
