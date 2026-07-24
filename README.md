@@ -56,3 +56,6 @@ git clone https://github.com/samarjs/ledger-cli.git
 cd ledger-cli
 pip install -r requirements.txt
 python main.py
+```
+### License
+This project is licensed under the MIT License.
